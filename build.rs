@@ -32,8 +32,7 @@ fn main() {
     let mut cfg = cc::Build::new();
     let target = env::var("TARGET").expect("TARGET not specified");
 
-    cfg.include(nfd!("include"));
-    cfg.file(nfd!("nfd_common.c"));
+    cfg.include(nfd!("include")).file(nfd!("nfd_common.c"));
 
     // clang/gcc will give a truncation warning @ nfd_gtk.c:54:59
     // ...but not apple clang! because apple clang is BEST CLANG
@@ -46,13 +45,14 @@ fn main() {
     }
 
     if target.contains("darwin") {
-        cfg.file(nfd!("nfd_cocoa.m"));
-        cfg.compile("libnfd.a");
+        cfg.file(nfd!("nfd_cocoa.m")).compile("libnfd.a");
         println!("cargo:rustc-link-lib=framework=AppKit");
     } else if target.contains("windows") {
-        cfg.cpp(true);
-        cfg.file(nfd!("nfd_win.cpp"));
-        cfg.compile("libnfd.a");
+        cfg.cpp(true)
+            .define("_CRT_SECURE_NO_WARNINGS", None)
+            .file(nfd!("nfd_win.cpp"))
+            .compile("libnfd.a");
+
         println!("cargo:rustc-link-lib=ole32");
         println!("cargo:rustc-link-lib=shell32");
         // MinGW doesn't link it by default
@@ -76,8 +76,7 @@ fn main() {
             }
         }
 
-        cfg.file(nfd!("nfd_gtk.c"));
-        cfg.compile("libnfd.a");
+        cfg.file(nfd!("nfd_gtk.c")).compile("libnfd.a");
         println!("cargo:rustc-link-lib=gdk-3");
         println!("cargo:rustc-link-lib=gtk-3");
         println!("cargo:rustc-link-lib=glib-2.0");
