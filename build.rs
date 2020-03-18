@@ -60,18 +60,17 @@ fn main() {
             .arg("--libs")
             .arg("glib-2.0")
             .output();
-        match pkg_output {
-            Ok(output) => {
-                let t = String::from_utf8(output.stdout).unwrap();
-                let flags = t.split(" ");
-                for flag in flags {
-                    if flag != "\n" && flag != "" {
-                        cfg.flag(flag);
-                    }
+
+        if let Ok(output) = pkg_output {
+            let t = String::from_utf8(output.stdout).unwrap();
+            let flags = t.split(' ');
+            for flag in flags {
+                if flag != "\n" && flag != "" {
+                    cfg.flag(flag);
                 }
             }
-            _ => (),
         }
+
         cfg.file(nfd!("nfd_gtk.c"));
         cfg.compile("libnfd.a");
         println!("cargo:rustc-link-lib=gdk-3");

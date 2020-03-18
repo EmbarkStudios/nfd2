@@ -20,6 +20,30 @@
    THE SOFTWARE.
 */
 
+#![warn(
+    clippy::all,
+    clippy::doc_markdown,
+    clippy::dbg_macro,
+    clippy::todo,
+    clippy::empty_enum,
+    clippy::enum_glob_use,
+    clippy::pub_enum_variant_names,
+    clippy::mem_forget,
+    clippy::use_self,
+    clippy::filter_map_next,
+    clippy::needless_continue,
+    clippy::needless_borrow,
+    rust_2018_idioms,
+    future_incompatible,
+    missing_copy_implementations,
+    trivial_numeric_casts,
+    unstable_features,
+    nonstandard_style,
+    unused_import_braces,
+    unused_qualifications,
+    unused_results
+)]
+
 pub mod error;
 pub mod ffi;
 
@@ -63,12 +87,12 @@ impl<'a> DialogBuilder<'a> {
         }
     }
 
-    pub fn filter(&'a mut self, filter: &'a str) -> &mut DialogBuilder {
+    pub fn filter(&'a mut self, filter: &'a str) -> &mut DialogBuilder<'a> {
         self.filter = Some(filter);
         self
     }
 
-    pub fn default_path(&'a mut self, path: &'a str) -> &mut DialogBuilder {
+    pub fn default_path(&'a mut self, path: &'a str) -> &mut DialogBuilder<'a> {
         self.default_path = Some(path);
         self
     }

@@ -19,10 +19,10 @@ That being said, our ultimate goal with this crate is to eventually make it pure
 ### Single File Dialog
 
 ```rust
-use nfd::Response;
+use nfd2::Response;
 
 fn main() {
-    match nfd::open_file_dialog(None, None).expect("oh no") {
+    match nfd2::open_file_dialog(None, None).expect("oh no") {
         Response::Okay(file_path) => println!("File path = {:?}", file_path),
         Response::OkayMultiple(files) => println!("Files {:?}", files),
         Response::Cancel => println!("User canceled"),
@@ -33,11 +33,11 @@ fn main() {
 ### Multiple File Dialog
 
 ```rust
-use nfd::Response;
+use nfd2::Response;
 
 fn main() {
     /// Only show .jpg files
-    let result = nfd::dialog_multiple().filter("jpg").open().expect("oh no");
+    let result = nfd2::dialog_multiple().filter("jpg").open().expect("oh no");
 
     match result {
         Response::Okay(file_path) => println!("File path = {:?}", file_path),
