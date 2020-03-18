@@ -30,21 +30,26 @@ macro_rules! nfd {
 
 fn main() {
     let mut cfg = cc::Build::new();
-    let env = env::var("TARGET").unwrap();
+    let target = env::var("TARGET").expect("TARGET not specified");
 
     cfg.include(nfd!("include"));
     cfg.file(nfd!("nfd_common.c"));
 
     // clang/gcc will give a truncation warning @ nfd_gtk.c:54:59
-    if cfg.get_compiler().is_like_gnu() {
+    // ...but not apple clang! because apple clang is BEST CLANG
+    if cfg.get_compiler().is_like_gnu()
+        && !env::var("HOST")
+            .expect("HOST not specified")
+            .contains("darwin")
+    {
         cfg.flag("-Wno-format-truncation");
     }
 
-    if env.contains("darwin") {
+    if target.contains("darwin") {
         cfg.file(nfd!("nfd_cocoa.m"));
         cfg.compile("libnfd.a");
         println!("cargo:rustc-link-lib=framework=AppKit");
-    } else if env.contains("windows") {
+    } else if target.contains("windows") {
         cfg.cpp(true);
         cfg.file(nfd!("nfd_win.cpp"));
         cfg.compile("libnfd.a");
