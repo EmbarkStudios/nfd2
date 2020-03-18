@@ -10,7 +10,7 @@
 
 ## This is a fork!
 
-The original nfd-rs crate appears essentially unmaintained by now, so we have made this fork with the intent of making sure that it is at least maintained and that bugs stay fixed so we can have something to rely on.
+The original [nfd-rs](https://github.com/saurvs/nfd-rs) crate appears essentially unmaintained by now, so we have made this fork with the intent of making sure that it is at least maintained and that bugs stay fixed so we can have something to rely on.
 
 That being said, our ultimate goal with this crate is to eventually make it pure Rust, without a need for external C code or a build script at all.
 
