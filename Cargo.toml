@@ -1,0 +1,20 @@
+[package]
+name = "nfd2"
+version = "0.1.0"
+authors = [
+    "Saurav Sachidanand <sauravsachidanand@gmail.com>",
+    "Daniel Collin <daniel@collin.com>",
+    "Denis Kolodin <deniskolodin@gmail.com>",
+    "Embark <opensource@embark-studios.com>",
+    "Jake Shadle <jake.shadle@embark-studios.com>"
+]
+repository = "https://www.github.com/EmbarkStudios/nfd2"
+description = "Rust bindings to nativefiledialog"
+keywords = ["file", "dialog", "ui"]
+license = "MIT"
+edition = "2018"
+
+build = "build.rs"
+
+[build-dependencies]
+cc = "1.0"

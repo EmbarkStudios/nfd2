@@ -1,4 +1,5 @@
-Copyright (c) 2015 Saurav Sachidanand
+/*
+Copyright (c) 2016 Saurav Sachidanand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -17,3 +18,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+*/
+
+use nfd2::Response;
+
+fn main() {
+    let result = nfd2::open_file_dialog(None, None).expect("oh no");
+
+    match result {
+        Response::Okay(file_path) => println!("File path = {:?}", file_path),
+        Response::Cancel => println!("User canceled"),
+        _ => (),
+    }
+}
