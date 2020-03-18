@@ -1,22 +1,51 @@
-<!--- FIXME: Pick an emoji! --->
-# 🌻 opensource-template
+# 💾 nfd2
 
-<!--- FIXME: Update crate and repo names here! --->
-[![Build Status](https://github.com/EmbarkStudios/template/workflows/CI/badge.svg)](https://github.com/EmbarkStudios/template/actions?workflow=CI)
-[![Crates.io](https://img.shields.io/crates/v/tame-oauth.svg)](https://crates.io/crates/tame-oauth)
-[![Docs](https://docs.rs/tame-oauth/badge.svg)](https://docs.rs/tame-oauth)
+[![Build Status](https://github.com/EmbarkStudios/nfd2/workflows/CI/badge.svg)](https://github.com/EmbarkStudios/nfd2/actions?workflow=CI)
+[![Crates.io](https://img.shields.io/crates/v/nfd2.svg)](https://crates.io/crates/nfd2)
+[![Docs](https://docs.rs/nfd2/badge.svg)](https://docs.rs/nfd2)
 [![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![Embark](https://img.shields.io/badge/embark-open%20source-blueviolet.svg)](https://embark.dev)
 
-Template for creating new open source repositories that follow the Embark open source guidelines.
+`nfd2` is a Rust binding to the library nativefiledialog, that provides a convenient cross-platform interface to opening file dialogs on Windows, MacOS, and Linux.
 
-## TEMPLATE INSTRUCTIONS
+## This is a fork!
 
-1. Create a new repository under EmbarkStudios using this template.
-1. __Title:__ Change the first line of this README to the name of your project, and replace the sunflower with an emoji that represents your project. 🚨 Your emoji selection is critical.
-1. __Badges:__ In the badges section above, change the repo name in each URL. If you are creating something other than a Rust crate, remove the crates.io and docs badges (and feel free to add more appropriate ones for your language).
-1. __CI:__ In `./github/workflows/` rename `rust-ci.yml` (or the appropriate config for your language) to `ci.yml`. And go over it and adapt it to work for your project
-1. __Cleanup:__ Remove this section of the README and any unused files (such as configs for other languages) from the repo.
+The original nfd-rs crate appears essentially unmaintained by now, so we have made this fork with the intent of making sure that it is at least maintained and that bugs stay fixed so we can have something to rely on.
+
+That being said, our ultimate goal with this crate is to eventually make it pure Rust, without a need for external C code or a build script at all.
+
+## Usage
+
+### Single File Dialog
+
+```rust
+use nfd::Response;
+
+fn main() {
+    match nfd::open_file_dialog(None, None).expect("oh no") {
+        Response::Okay(file_path) => println!("File path = {:?}", file_path),
+        Response::OkayMultiple(files) => println!("Files {:?}", files),
+        Response::Cancel => println!("User canceled"),
+    }
+}
+```
+
+### Multiple File Dialog
+
+```rust
+use nfd::Response;
+
+fn main() {
+    /// Only show .jpg files
+    let result = nfd::dialog_multiple().filter("jpg").open().expect("oh no");
+
+    match result {
+        Response::Okay(file_path) => println!("File path = {:?}", file_path),
+        Response::OkayMultiple(files) => println!("Files {:?}", files),
+        Response::Cancel => println!("User canceled"),
+    }
+}
+```
 
 ## Contributing
 
@@ -26,13 +55,4 @@ Please read our [Contributor Guide](CONTRIBUTING.md) for more information on how
 
 ## License
 
-Licensed under either of
-
-* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
-* MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
-
-at your option.
-
-### Contribution
-
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
+MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
