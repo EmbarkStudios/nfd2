@@ -55,4 +55,4 @@ Please read our [Contributor Guide](CONTRIBUTING.md) for more information on how
 
 ## License
 
-MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT) AND Zlib ([Zlib](https://github.com/mlabbe/nativefiledialog/blob/master/LICENSE) or https://opensource.org/licenses/Zlib)
