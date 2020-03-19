@@ -11,7 +11,7 @@ authors = [
 repository = "https://www.github.com/EmbarkStudios/nfd2"
 description = "Rust bindings to nativefiledialog"
 keywords = ["file", "dialog", "ui"]
-license = "MIT"
+license = "MIT AND Zlib"
 edition = "2018"
 
 build = "build.rs"
