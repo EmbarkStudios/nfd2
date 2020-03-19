@@ -6,7 +6,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![Embark](https://img.shields.io/badge/embark-open%20source-blueviolet.svg)](https://embark.dev)
 
-`nfd2` is a Rust binding to the library nativefiledialog, that provides a convenient cross-platform interface to opening file dialogs on Windows, MacOS, and Linux.
+`nfd2` is a Rust binding to the [nativefiledialog](https://github.com/mlabbe/nativefiledialog) library, that provides a convenient cross-platform interface to opening file dialogs on Windows, MacOS, and Linux.
 
 ## This is a fork!
 
@@ -55,4 +55,4 @@ Please read our [Contributor Guide](CONTRIBUTING.md) for more information on how
 
 ## License
 
-MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT) AND Zlib ([Zlib](https://github.com/mlabbe/nativefiledialog/blob/master/LICENSE) or https://opensource.org/licenses/Zlib)
