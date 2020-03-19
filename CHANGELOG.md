@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+### Fixed
+- Fixed up cargo metadata
+
 ## [0.1.0] - 2020-03-19
 ### Added
 - Initial add of nfd2, forked from [nfd-rs](https://github.com/saurvs/nfd-rs)
