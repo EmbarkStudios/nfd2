@@ -1,6 +1,7 @@
 [package]
 name = "nfd2"
 version = "0.1.0"
+edition = "2018"
 authors = [
     "Saurav Sachidanand <sauravsachidanand@gmail.com>",
     "Daniel Collin <daniel@collin.com>",
@@ -8,11 +9,13 @@ authors = [
     "Embark <opensource@embark-studios.com>",
     "Jake Shadle <jake.shadle@embark-studios.com>"
 ]
+documentation = "https://docs.rs/nfd2"
 repository = "https://www.github.com/EmbarkStudios/nfd2"
+homepage = "https://github.com/EmbarkStudios/nfd2"
 description = "Rust bindings to nativefiledialog"
 keywords = ["file", "dialog", "ui"]
+readme = "README.md"
 license = "MIT AND Zlib"
-edition = "2018"
 
 include = [
     "/*.toml",
