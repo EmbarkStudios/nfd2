@@ -52,14 +52,17 @@ use ffi::*;
 use std::{
     ffi::{CStr, CString},
     os::raw::c_char,
+    path::{Path, PathBuf},
 };
 
-/// Result of opening a file dialog
+/// Result of opening a file dialog. Note that the underlying C library only
+/// ever returns paths encoded as utf-8 strings, if a path cannot be converted
+/// to a valid utf-8 string, then an error is returned instead.
 pub enum Response {
-    /// User pressed okay. `String` is the file path selected
-    Okay(String),
-    /// User pressed okay on mupliple selections. Result contains a Vec of all the files
-    OkayMultiple(Vec<String>),
+    /// The user pressed okay, and a single path was selected
+    Okay(PathBuf),
+    /// The user pressed okay, and 1 or more paths were selected
+    OkayMultiple(Vec<PathBuf>),
     /// User pressed cancel
     Cancel,
 }
@@ -74,7 +77,7 @@ pub enum DialogType {
 
 pub struct DialogBuilder<'a> {
     filter: Option<&'a str>,
-    default_path: Option<&'a str>,
+    default_path: Option<&'a Path>,
     dialog_type: DialogType,
 }
 
@@ -87,21 +90,52 @@ impl<'a> DialogBuilder<'a> {
         }
     }
 
+    /// Creates a builder for selecting a single file
+    pub fn single() -> Self {
+        Self::new(DialogType::SingleFile)
+    }
+
+    /// Creates a builder for selecting multiple files
+    pub fn multiple() -> Self {
+        Self::new(DialogType::MultipleFiles)
+    }
+
+    /// Adds a filter to the dialog
+    ///
+    /// Separators
+    /// - `;` Begin a new filter.
+    /// - `,` Add a separate type to the filter.
+    ///
+    /// # Examples
+    ///
+    /// - `txt` The default filter is for text files. There is a wildcard option
+    /// in a dropdown.
+    /// - `png,jpg;psd` The default filter is for `png` and `jpg` files. A
+    /// second filter is available for `psd` files. There is a wildcard option
+    /// in a dropdown.
+    /// - Not applying any filters means only the wildcard option is available.
+    ///
+    /// See the [documentation](https://github.com/mlabbe/nativefiledialog#file-filter-syntax)
+    /// of the underlying C lib for more info.
     pub fn filter(&'a mut self, filter: &'a str) -> &mut DialogBuilder<'a> {
         self.filter = Some(filter);
         self
     }
 
-    pub fn default_path(&'a mut self, path: &'a str) -> &mut DialogBuilder<'a> {
-        self.default_path = Some(path);
+    /// Specify the default directory to start the dialog in, otherwise the
+    /// default directory will be dependent upon the host API
+    pub fn default_path<P: AsRef<Path>>(&'a mut self, path: &'a P) -> &mut DialogBuilder<'a> {
+        self.default_path = Some(path.as_ref());
         self
     }
 
+    /// Opens the dialog and waits upon a response from the user
     pub fn open(&self) -> Result<Response> {
         open_dialog(self.filter, self.default_path, self.dialog_type)
     }
 }
 
+/// Helper
 pub fn dialog<'a>() -> DialogBuilder<'a> {
     DialogBuilder::new(DialogType::SingleFile)
 }
@@ -117,31 +151,37 @@ pub fn dialog_save<'a>() -> DialogBuilder<'a> {
 pub type Result<T> = std::result::Result<T, NFDError>;
 
 /// Open single file dialog
-pub fn open_file_dialog(filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
+pub fn open_file_dialog(
+    filter_list: Option<&str>,
+    default_path: Option<&Path>,
+) -> Result<Response> {
     open_dialog(filter_list, default_path, DialogType::SingleFile)
 }
 
 /// Open mulitple file dialog
 pub fn open_file_multiple_dialog(
     filter_list: Option<&str>,
-    default_path: Option<&str>,
+    default_path: Option<&Path>,
 ) -> Result<Response> {
     open_dialog(filter_list, default_path, DialogType::MultipleFiles)
 }
 
 /// Open save dialog
-pub fn open_save_dialog(filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
+pub fn open_save_dialog(
+    filter_list: Option<&str>,
+    default_path: Option<&Path>,
+) -> Result<Response> {
     open_dialog(filter_list, default_path, DialogType::SaveFile)
 }
 
 /// Open save dialog
-pub fn open_pick_folder(default_path: Option<&str>) -> Result<Response> {
+pub fn open_pick_folder(default_path: Option<&Path>) -> Result<Response> {
     open_dialog(None, default_path, DialogType::PickFolder)
 }
 
 pub fn open_dialog(
     filter_list: Option<&str>,
-    default_path: Option<&str>,
+    default_path: Option<&Path>,
     dialog_type: DialogType,
 ) -> Result<Response> {
     let result;
@@ -158,7 +198,9 @@ pub fn open_dialog(
 
     let default_path_ptr = match default_path {
         Some(dp_str) => {
-            default_path_cstring = CString::new(dp_str)?;
+            default_path_cstring = CString::new(dp_str.to_str().ok_or_else(|| {
+                NFDError::Error("unable to convert default path to utf-8".to_owned())
+            })?)?;
             default_path_cstring.as_ptr()
         }
         None => std::ptr::null(),
@@ -194,16 +236,16 @@ pub fn open_dialog(
                         let path = CStr::from_ptr(NFD_PathSet_GetPath(&out_multiple, i))
                             .to_string_lossy()
                             .into_owned();
-                        res.push(path)
+                        res.push(PathBuf::from(path));
                     }
 
                     NFD_PathSet_Free(ptr_out_multiple);
 
                     Ok(Response::OkayMultiple(res))
                 } else {
-                    Ok(Response::Okay(
+                    Ok(Response::Okay(PathBuf::from(
                         CStr::from_ptr(out_path).to_string_lossy().into_owned(),
-                    ))
+                    )))
                 }
             }
 
