@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+## [0.2.0] - 2020-04-05
 ### Changed
 - [PR#5](https://github.com/EmbarkStudios/nfd2/pull/5) changed the API to take `Path` inputs and give `PathBuf` outputs for all filesystem paths.
 
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial add of nfd2, forked from [nfd-rs](https://github.com/saurvs/nfd-rs)
 
 <!-- next-url -->
-[Unreleased]: https://github.com/EmbarkStudios/nfd2/compare/0.1.1...HEAD
+[Unreleased]: https://github.com/EmbarkStudios/nfd2/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/EmbarkStudios/nfd2/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/EmbarkStudios/nfd2/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/EmbarkStudios/nfd2/releases/tag/0.1.0
