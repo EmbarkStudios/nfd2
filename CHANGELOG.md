@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+### Changed
+- [PR#9](https://github.com/EmbarkStudios/nfd2/pull/9) implemented `std::error::Error` for `NFDError`
+
 ## [0.2.0] - 2020-04-05
 ### Changed
 - [PR#5](https://github.com/EmbarkStudios/nfd2/pull/5) changed the API to take `Path` inputs and give `PathBuf` outputs for all filesystem paths.
