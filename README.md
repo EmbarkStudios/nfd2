@@ -16,15 +16,18 @@ That being said, our ultimate goal with this crate is to eventually make it pure
 
 ## Dependencies
 
-Since this crate currently depends on [nativefiledialog], you must have the dependencies for that project installed.
+Since this crate currently depends on [nativefiledialog], you must have the dependencies for that project installed. See [*Compiling Your Programs*](https://github.com/mlabbe/nativefiledialog#compiling-your-programs) in the README.md file for [nativefiledialog] for more information on the requirements for each platform.
 
-* On Linux with GTK, `apt-get install libgtk-3-dev` installs the `gtk` dependency
-* Other platforms do not require additional installation (please update these instructions if you find that not to be the case)
+### Linux
 
-See [*Compiling Your Programs*] in the README.md file for [nativefiledialog] for more information on the requirements for each platform.
+Linux requires the GTK3 development package(s) to be installed before building:
 
-[nativefiledialog]: https://github.com/mlabbe/nativefiledialog
-[*Compiling Your Programs*]: https://github.com/mlabbe/nativefiledialog#compiling-your-programs
+* Debian/Ubuntu: `apt-get install libgtk-3-dev`
+* Fedora: `dnf install gtk3-devel`
+
+### Other
+
+Other platforms do not require additional installation.
 
 ## Usage
 
@@ -68,3 +71,5 @@ Please read our [Contributor Guide](CONTRIBUTING.md) for more information on how
 ## License
 
 MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT) AND Zlib ([Zlib](https://github.com/mlabbe/nativefiledialog/blob/master/LICENSE) or https://opensource.org/licenses/Zlib)
+
+[nativefiledialog]: https://github.com/mlabbe/nativefiledialog
