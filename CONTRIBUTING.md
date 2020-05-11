@@ -36,15 +36,17 @@ You can comment on the issue to let others know you're interested in working on 
 
 ### Making Changes
 
-1. Fork the repository.
+1. Fork the repository and clone it to a directory on your computer.
 
-2. Create a new feature branch.
+2. Run `git submodule init` and `git submodule update --recursive` ([more info on these commands](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_cloning_submodules))
 
-3. Make your changes. Ensure that there are no build errors by running the project with your changes locally.
+3. Create a new feature branch.
 
-4. Open a pull request with a name and description of what you did. You can read more about working with pull requests on GitHub [here](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork).
+4. Make your changes. Ensure that there are no build errors by running the project with your changes locally.
 
-5. A maintainer will review your pull request and may ask you to make changes.
+5. Open a pull request with a name and description of what you did. You can read more about working with pull requests on GitHub [here](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork).
+
+6. A maintainer will review your pull request and may ask you to make changes.
 
 ## Code Guidelines
 

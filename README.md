@@ -6,13 +6,25 @@
 [![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![Embark](https://img.shields.io/badge/embark-open%20source-blueviolet.svg)](https://embark.dev)
 
-`nfd2` is a Rust binding to the [nativefiledialog](https://github.com/mlabbe/nativefiledialog) library, that provides a convenient cross-platform interface to opening file dialogs on Windows, MacOS, and Linux.
+`nfd2` is a Rust binding to the [nativefiledialog] library, that provides a convenient cross-platform interface to opening file dialogs on Windows, MacOS, and Linux.
 
 ## This is a fork!
 
 The original [nfd-rs](https://github.com/saurvs/nfd-rs) crate appears essentially unmaintained by now, so we have made this fork with the intent of making sure that it is at least maintained and that bugs stay fixed so we can have something to rely on.
 
 That being said, our ultimate goal with this crate is to eventually make it pure Rust, without a need for external C code or a build script at all.
+
+## Dependencies
+
+Since this crate currently depends on [nativefiledialog], you must have the dependencies for that project installed.
+
+* On Linux with GTK, `apt-get install libgtk-3-dev` installs the `gtk` dependency
+* Other platforms do not require additional installation (please update these instructions if you find that not to be the case)
+
+See [*Compiling Your Programs*] in the README.md file for [nativefiledialog] for more information on the requirements for each platform.
+
+[nativefiledialog]: https://github.com/mlabbe/nativefiledialog
+[*Compiling Your Programs*]: https://github.com/mlabbe/nativefiledialog#compiling-your-programs
 
 ## Usage
 
