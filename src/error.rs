@@ -1,4 +1,4 @@
-use std::{ffi, fmt, str};
+use std::{error, ffi, fmt, str};
 
 #[derive(Debug)]
 pub enum NFDError {
@@ -28,3 +28,5 @@ impl From<str::Utf8Error> for NFDError {
         Self::Utf8Error(err)
     }
 }
+
+impl error::Error for NFDError {}
