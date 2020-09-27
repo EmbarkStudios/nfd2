@@ -58,6 +58,7 @@ use std::{
 /// Result of opening a file dialog. Note that the underlying C library only
 /// ever returns paths encoded as utf-8 strings, if a path cannot be converted
 /// to a valid utf-8 string, then an error is returned instead.
+#[derive(Clone, PartialEq)]
 pub enum Response {
     /// The user pressed okay, and a single path was selected
     Okay(PathBuf),
