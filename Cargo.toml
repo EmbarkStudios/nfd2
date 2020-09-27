@@ -10,7 +10,7 @@ authors = [
     "Jake Shadle <jake.shadle@embark-studios.com>"
 ]
 documentation = "https://docs.rs/nfd2"
-repository = "https://www.github.com/EmbarkStudios/nfd2"
+repository = "https://github.com/EmbarkStudios/nfd2"
 homepage = "https://github.com/EmbarkStudios/nfd2"
 description = "Rust bindings to nativefiledialog"
 keywords = ["file", "dialog", "ui"]
