@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+### Added
+- `Response` now implements `Clone` and `PartialEq`, thanks [@virtualritz](https://github.com/virtualritz)!
+
 ## [0.2.1] - 2020-05-11
 ### Changed
 - [PR#9](https://github.com/EmbarkStudios/nfd2/pull/9) implemented `std::error::Error` for `NFDError`
