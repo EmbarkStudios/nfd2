@@ -18,7 +18,7 @@ Feature requests will be tagged as `enhancement` and their status will be update
 
 ### Bugs
 
-When reporting a bug or unexpected behaviour in a project, make sure your issue descibes steps to reproduce the behaviour, including the platform you were using, what steps you took, and any error messages.
+When reporting a bug or unexpected behaviour in a project, make sure your issue describes steps to reproduce the behaviour, including the platform you were using, what steps you took, and any error messages.
 
 Reproducible bugs will be tagged as `bug` and their status will be updated in the comments of the issue.
 
@@ -36,23 +36,21 @@ You can comment on the issue to let others know you're interested in working on 
 
 ### Making Changes
 
-1. Fork the repository and clone it to a directory on your computer.
+1. Fork the repository.
 
-2. Run `git submodule init` and `git submodule update --recursive` ([more info on these commands](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_cloning_submodules))
+2. Create a new feature branch.
 
-3. Create a new feature branch.
+3. Make your changes. Ensure that there are no build errors by running the project with your changes locally.
 
-4. Make your changes. Ensure that there are no build errors by running the project with your changes locally.
+4. Open a pull request with a name and description of what you did. You can read more about working with pull requests on GitHub [here](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork).
 
-5. Open a pull request with a name and description of what you did. You can read more about working with pull requests on GitHub [here](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork).
-
-6. A maintainer will review your pull request and may ask you to make changes.
+5. A maintainer will review your pull request and may ask you to make changes.
 
 ## Code Guidelines
 
 ### Rust
 
-You can read about our standards and recommendations for working with Rust [here](https://github.com/EmbarkStudios/rust-ecosystem/blob/master/guidelines.md).
+You can read about our standards and recommendations for working with Rust [here](https://github.com/EmbarkStudios/rust-ecosystem/blob/main/guidelines.md).
 
 ### Python
 
