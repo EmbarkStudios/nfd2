@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+## [0.2.3] - 2020-10-22
 ### Added
 - [PR#15](https://github.com/EmbarkStudios/nfd2/pull/15) added support for FreeBSD. Thanks [@Erk-](https://github.com/Erk-)!
 
@@ -30,7 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial add of nfd2, forked from [nfd-rs](https://github.com/saurvs/nfd-rs)
 
 <!-- next-url -->
-[Unreleased]: https://github.com/EmbarkStudios/nfd2/compare/0.2.2...HEAD
+[Unreleased]: https://github.com/EmbarkStudios/nfd2/compare/0.2.3...HEAD
+[0.2.3]: https://github.com/EmbarkStudios/nfd2/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/EmbarkStudios/nfd2/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/EmbarkStudios/nfd2/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/EmbarkStudios/nfd2/compare/0.1.1...0.2.0
