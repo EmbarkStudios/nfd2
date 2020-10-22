@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+### Added
+- [PR#15](https://github.com/EmbarkStudios/nfd2/pull/15) added support for FreeBSD. Thanks [@Erk-](https://github.com/Erk-)!
+
 ## [0.2.2] - 2020-09-27
 ### Added
 - `Response` now implements `Clone` and `PartialEq`, thanks [@virtualritz](https://github.com/virtualritz)!
