@@ -80,7 +80,23 @@ fn main() {
 
         // The libs needed are the not in the default search-path on FreeBSD
         #[cfg(target_os = "freebsd")]
-        println!("cargo:rustc-link-search=/usr/local/lib");
+        {
+            let pkg_search = Command::new("pkg-config")
+                .arg("--libs-only-L")
+                .arg("gtk+-3.0")
+                .arg("glib-2.0")
+                .output();
+
+            if let Ok(output) = pkg_search {
+                let t = String::from_utf8(output.stdout).unwrap();
+                let flags = t.split(' ');
+                for flag in flags {
+                    if let Some(dir) = flag.strip_prefix("-L") {
+                        println!("cargo:rustc-link-search={}", dir);
+                    }
+                }
+            }
+        }
 
         println!("cargo:rustc-link-lib=gdk-3");
         println!("cargo:rustc-link-lib=gtk-3");
