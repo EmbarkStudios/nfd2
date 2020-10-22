@@ -77,6 +77,11 @@ fn main() {
         }
 
         cfg.file(nfd!("nfd_gtk.c")).compile("libnfd.a");
+
+        // The libs needed are the not in the default search-path on FreeBSD
+        #[cfg(target_os = "freebsd")]
+        println!("cargo:rustc-link-search=/usr/local/lib");
+
         println!("cargo:rustc-link-lib=gdk-3");
         println!("cargo:rustc-link-lib=gtk-3");
         println!("cargo:rustc-link-lib=glib-2.0");
