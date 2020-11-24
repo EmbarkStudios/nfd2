@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/EmbarkStudios/nfd2/workflows/CI/badge.svg)](https://github.com/EmbarkStudios/nfd2/actions?workflow=CI)
 [![Crates.io](https://img.shields.io/crates/v/nfd2.svg)](https://crates.io/crates/nfd2)
 [![Docs](https://docs.rs/nfd2/badge.svg)](https://docs.rs/nfd2)
-[![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+[![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![Embark](https://img.shields.io/badge/embark-open%20source-blueviolet.svg)](https://embark.dev)
 
 `nfd2` is a Rust binding to the [nativefiledialog] library, that provides a convenient cross-platform interface to opening file dialogs on Windows, MacOS, and Linux.
