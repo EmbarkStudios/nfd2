@@ -70,7 +70,7 @@ fn main() {
             let t = String::from_utf8(output.stdout).unwrap();
             let flags = t.split(' ');
             for flag in flags {
-                if flag != "\n" && flag != "" {
+                if flag != "\n" && !flag.is_empty() {
                     cfg.flag(flag);
                 }
             }
