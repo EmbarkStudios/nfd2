@@ -50,6 +50,8 @@ fn main() {
     } else if target.contains("windows") {
         cfg.cpp(true)
             .define("_CRT_SECURE_NO_WARNINGS", None)
+            .define("UNICODE", None)
+            .define("_UNICODE", None)
             .file(nfd!("nfd_win.cpp"))
             .compile("libnfd.a");
 
@@ -70,7 +72,7 @@ fn main() {
             let t = String::from_utf8(output.stdout).unwrap();
             let flags = t.split(' ');
             for flag in flags {
-                if flag != "\n" && flag != "" {
+                if flag != "\n" && !flag.is_empty() {
                     cfg.flag(flag);
                 }
             }

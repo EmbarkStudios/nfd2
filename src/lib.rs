@@ -47,7 +47,7 @@
 pub mod error;
 pub mod ffi;
 
-use error::NFDError;
+use error::NfdError;
 use ffi::*;
 use std::{
     ffi::{CStr, CString},
@@ -149,7 +149,7 @@ pub fn dialog_save<'a>() -> DialogBuilder<'a> {
     DialogBuilder::new(DialogType::SaveFile)
 }
 
-pub type Result<T> = std::result::Result<T, NFDError>;
+pub type Result<T> = std::result::Result<T, NfdError>;
 
 /// Open single file dialog
 pub fn open_file_dialog(
@@ -200,7 +200,7 @@ pub fn open_dialog(
     let default_path_ptr = match default_path {
         Some(dp_str) => {
             default_path_cstring = CString::new(dp_str.to_str().ok_or_else(|| {
-                NFDError::Error("unable to convert default path to utf-8".to_owned())
+                NfdError::Error("unable to convert default path to utf-8".to_owned())
             })?)?;
             default_path_cstring.as_ptr()
         }
@@ -229,7 +229,7 @@ pub fn open_dialog(
         };
 
         match result {
-            nfdresult_t::NFD_OKAY => {
+            nfdresult_t::Okay => {
                 if dialog_type == DialogType::MultipleFiles {
                     let count = NFD_PathSet_GetCount(&out_multiple);
                     let mut res = Vec::with_capacity(count);
@@ -244,14 +244,17 @@ pub fn open_dialog(
 
                     Ok(Response::OkayMultiple(res))
                 } else {
-                    Ok(Response::Okay(PathBuf::from(
-                        CStr::from_ptr(out_path).to_string_lossy().into_owned(),
-                    )))
+                    let path =
+                        PathBuf::from(CStr::from_ptr(out_path).to_string_lossy().into_owned());
+
+                    NFD_Free(out_path as *mut _);
+
+                    Ok(Response::Okay(path))
                 }
             }
 
-            nfdresult_t::NFD_CANCEL => Ok(Response::Cancel),
-            nfdresult_t::NFD_ERROR => Err(NFDError::Error(
+            nfdresult_t::Cancel => Ok(Response::Cancel),
+            nfdresult_t::Error => Err(NfdError::Error(
                 CStr::from_ptr(NFD_GetError())
                     .to_string_lossy()
                     .into_owned(),

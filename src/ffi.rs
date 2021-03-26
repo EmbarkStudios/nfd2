@@ -52,9 +52,9 @@ impl Default for nfdpathset_t {
 #[repr(u32)]
 #[derive(Debug)]
 pub enum nfdresult_t {
-    NFD_ERROR = 0,
-    NFD_OKAY = 1,
-    NFD_CANCEL = 2,
+    Error = 0,
+    Okay = 1,
+    Cancel = 2,
 }
 
 extern "C" {
@@ -81,4 +81,5 @@ extern "C" {
     pub fn NFD_PathSet_GetCount(pathSet: *const nfdpathset_t) -> size_t;
     pub fn NFD_PathSet_GetPath(pathSet: *const nfdpathset_t, index: size_t) -> *mut nfdchar_t;
     pub fn NFD_PathSet_Free(pathSet: *mut nfdpathset_t);
+    pub fn NFD_Free(ptr: *mut std::os::raw::c_void);
 }
