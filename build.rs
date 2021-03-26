@@ -50,6 +50,7 @@ fn main() {
     } else if target.contains("windows") {
         cfg.cpp(true)
             .define("_CRT_SECURE_NO_WARNINGS", None)
+            .define("UNICODE", None)
             .file(nfd!("nfd_win.cpp"))
             .compile("libnfd.a");
 
