@@ -52,9 +52,9 @@ impl Default for nfdpathset_t {
 #[repr(u32)]
 #[derive(Debug)]
 pub enum nfdresult_t {
-    NFD_ERROR = 0,
-    NFD_OKAY = 1,
-    NFD_CANCEL = 2,
+    Error = 0,
+    Okay = 1,
+    Cancel = 2,
 }
 
 extern "C" {
