@@ -81,4 +81,5 @@ extern "C" {
     pub fn NFD_PathSet_GetCount(pathSet: *const nfdpathset_t) -> size_t;
     pub fn NFD_PathSet_GetPath(pathSet: *const nfdpathset_t, index: size_t) -> *mut nfdchar_t;
     pub fn NFD_PathSet_Free(pathSet: *mut nfdpathset_t);
+    pub fn NFD_Free(ptr: *mut std::os::raw::c_void);
 }

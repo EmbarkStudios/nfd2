@@ -244,9 +244,12 @@ pub fn open_dialog(
 
                     Ok(Response::OkayMultiple(res))
                 } else {
-                    Ok(Response::Okay(PathBuf::from(
-                        CStr::from_ptr(out_path).to_string_lossy().into_owned(),
-                    )))
+                    let path =
+                        PathBuf::from(CStr::from_ptr(out_path).to_string_lossy().into_owned());
+
+                    NFD_Free(out_path as *mut _);
+
+                    Ok(Response::Okay(path))
                 }
             }
 
