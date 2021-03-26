@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+### Changed
+- Renamed `NFDError` to `NfdError`.
+- Updated the underlying C library to the latest devel branch.
+
+### Fixed
+- Fixed a memory leak, other than multi-file dialogs, all paths were being leaked, oops!
+
 ## [0.2.3] - 2020-10-22
 ### Added
 - [PR#15](https://github.com/EmbarkStudios/nfd2/pull/15) added support for FreeBSD. Thanks [@Erk-](https://github.com/Erk-)!
