@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+## [0.3.0] - 2021-03-26
 ### Changed
 - Renamed `NFDError` to `NfdError`.
 - Updated the underlying C library to the latest devel branch.
@@ -38,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial add of nfd2, forked from [nfd-rs](https://github.com/saurvs/nfd-rs)
 
 <!-- next-url -->
-[Unreleased]: https://github.com/EmbarkStudios/nfd2/compare/0.2.3...HEAD
+[Unreleased]: https://github.com/EmbarkStudios/nfd2/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/EmbarkStudios/nfd2/compare/0.2.3...0.3.0
 [0.2.3]: https://github.com/EmbarkStudios/nfd2/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/EmbarkStudios/nfd2/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/EmbarkStudios/nfd2/compare/0.2.0...0.2.1
