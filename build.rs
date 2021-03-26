@@ -51,6 +51,7 @@ fn main() {
         cfg.cpp(true)
             .define("_CRT_SECURE_NO_WARNINGS", None)
             .define("UNICODE", None)
+            .define("_UNICODE", None)
             .file(nfd!("nfd_win.cpp"))
             .compile("libnfd.a");
 
