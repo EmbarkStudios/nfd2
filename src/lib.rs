@@ -20,40 +20,79 @@
    THE SOFTWARE.
 */
 
+// BEGIN - Embark standard lints v0.3
+// do not change or add/remove here, but one can add exceptions after this section
+// for more info see: <https://github.com/EmbarkStudios/rust-ecosystem/issues/59>
 #![warn(
     clippy::all,
-    clippy::doc_markdown,
+    clippy::await_holding_lock,
     clippy::dbg_macro,
-    clippy::todo,
+    clippy::debug_assert_with_mut_call,
+    clippy::doc_markdown,
     clippy::empty_enum,
     clippy::enum_glob_use,
-    clippy::pub_enum_variant_names,
-    clippy::mem_forget,
-    clippy::use_self,
+    clippy::exit,
+    clippy::explicit_into_iter_loop,
     clippy::filter_map_next,
-    clippy::needless_continue,
+    clippy::fn_params_excessive_bools,
+    clippy::if_let_mutex,
+    clippy::imprecise_flops,
+    clippy::inefficient_to_string,
+    clippy::large_types_passed_by_value,
+    clippy::let_unit_value,
+    clippy::linkedlist,
+    clippy::lossy_float_literal,
+    clippy::macro_use_imports,
+    clippy::map_err_ignore,
+    clippy::map_flatten,
+    clippy::map_unwrap_or,
+    clippy::match_on_vec_items,
+    clippy::match_same_arms,
+    clippy::match_wildcard_for_single_variants,
+    clippy::mem_forget,
+    clippy::mismatched_target_os,
     clippy::needless_borrow,
-    rust_2018_idioms,
+    clippy::needless_continue,
+    clippy::option_option,
+    clippy::pub_enum_variant_names,
+    clippy::ref_option_ref,
+    clippy::rest_pat_in_fully_bound_structs,
+    clippy::string_add_assign,
+    clippy::string_add,
+    clippy::string_to_string,
+    clippy::suboptimal_flops,
+    clippy::todo,
+    clippy::unimplemented,
+    clippy::unnested_or_patterns,
+    clippy::unused_self,
+    clippy::verbose_file_reads,
     future_incompatible,
-    missing_copy_implementations,
-    trivial_numeric_casts,
-    unstable_features,
     nonstandard_style,
-    unused_import_braces,
-    unused_qualifications,
-    unused_results
+    rust_2018_idioms
 )]
+// END - Embark standard lints v0.3
 
+mod common;
 pub mod error;
-pub mod ffi;
 
+pub use common::FilterList;
 use error::NfdError;
-use ffi::*;
-use std::{
-    ffi::{CStr, CString},
-    os::raw::c_char,
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
+
+#[cfg(not(all(
+    target_os = "windows",
+    target_os = "macos",
+    target_os = "ios",
+    feature = "zenity"
+)))]
+mod gtk;
+#[cfg(not(all(
+    target_os = "windows",
+    target_os = "macos",
+    target_os = "ios",
+    feature = "zenity"
+)))]
+use gtk as imp;
 
 /// Result of opening a file dialog. Note that the underlying C library only
 /// ever returns paths encoded as utf-8 strings, if a path cannot be converted
@@ -77,14 +116,14 @@ pub enum DialogType {
 }
 
 pub struct DialogBuilder<'a> {
-    filter: Option<&'a str>,
+    filter: Option<FilterList<'a>>,
     default_path: Option<&'a Path>,
     dialog_type: DialogType,
 }
 
 impl<'a> DialogBuilder<'a> {
     pub fn new(dialog_type: DialogType) -> Self {
-        DialogBuilder {
+        Self {
             filter: None,
             default_path: None,
             dialog_type,
@@ -118,14 +157,14 @@ impl<'a> DialogBuilder<'a> {
     ///
     /// See the [documentation](https://github.com/mlabbe/nativefiledialog#file-filter-syntax)
     /// of the underlying C lib for more info.
-    pub fn filter(&'a mut self, filter: &'a str) -> &mut DialogBuilder<'a> {
+    pub fn filter(&mut self, filter: FilterList<'a>) -> &mut Self {
         self.filter = Some(filter);
         self
     }
 
     /// Specify the default directory to start the dialog in, otherwise the
     /// default directory will be dependent upon the host API
-    pub fn default_path<P: AsRef<Path>>(&'a mut self, path: &'a P) -> &mut DialogBuilder<'a> {
+    pub fn default_path(&mut self, path: &'a impl AsRef<Path>) -> &mut Self {
         self.default_path = Some(path.as_ref());
         self
     }
@@ -136,24 +175,12 @@ impl<'a> DialogBuilder<'a> {
     }
 }
 
-/// Helper
-pub fn dialog<'a>() -> DialogBuilder<'a> {
-    DialogBuilder::new(DialogType::SingleFile)
-}
-
-pub fn dialog_multiple<'a>() -> DialogBuilder<'a> {
-    DialogBuilder::new(DialogType::MultipleFiles)
-}
-
-pub fn dialog_save<'a>() -> DialogBuilder<'a> {
-    DialogBuilder::new(DialogType::SaveFile)
-}
-
 pub type Result<T> = std::result::Result<T, NfdError>;
 
 /// Open single file dialog
+#[inline]
 pub fn open_file_dialog(
-    filter_list: Option<&str>,
+    filter_list: Option<FilterList<'_>>,
     default_path: Option<&Path>,
 ) -> Result<Response> {
     open_dialog(filter_list, default_path, DialogType::SingleFile)
@@ -161,7 +188,7 @@ pub fn open_file_dialog(
 
 /// Open mulitple file dialog
 pub fn open_file_multiple_dialog(
-    filter_list: Option<&str>,
+    filter_list: Option<FilterList<'_>>,
     default_path: Option<&Path>,
 ) -> Result<Response> {
     open_dialog(filter_list, default_path, DialogType::MultipleFiles)
@@ -169,96 +196,27 @@ pub fn open_file_multiple_dialog(
 
 /// Open save dialog
 pub fn open_save_dialog(
-    filter_list: Option<&str>,
+    filter_list: Option<FilterList<'_>>,
     default_path: Option<&Path>,
 ) -> Result<Response> {
     open_dialog(filter_list, default_path, DialogType::SaveFile)
 }
 
-/// Open save dialog
+/// Open folder selection dialog
 pub fn open_pick_folder(default_path: Option<&Path>) -> Result<Response> {
     open_dialog(None, default_path, DialogType::PickFolder)
 }
 
 pub fn open_dialog(
-    filter_list: Option<&str>,
+    filter_list: Option<FilterList<'_>>,
     default_path: Option<&Path>,
     dialog_type: DialogType,
 ) -> Result<Response> {
-    let result;
-    let filter_list_cstring;
-    let default_path_cstring;
+    match dialog_type {
+        DialogType::SingleFile => imp::open_dialog(filter_list, default_path),
+        DialogType::MultipleFiles => imp::open_dialog_multi(filter_list, default_path),
 
-    let filter_list_ptr = match filter_list {
-        Some(fl_str) => {
-            filter_list_cstring = CString::new(fl_str)?;
-            filter_list_cstring.as_ptr()
-        }
-        None => std::ptr::null(),
-    };
-
-    let default_path_ptr = match default_path {
-        Some(dp_str) => {
-            default_path_cstring = CString::new(dp_str.to_str().ok_or_else(|| {
-                NfdError::Error("unable to convert default path to utf-8".to_owned())
-            })?)?;
-            default_path_cstring.as_ptr()
-        }
-        None => std::ptr::null(),
-    };
-
-    let mut out_path: *mut c_char = std::ptr::null_mut();
-    let ptr_out_path = &mut out_path as *mut *mut c_char;
-
-    let mut out_multiple = nfdpathset_t::default();
-    let ptr_out_multiple = &mut out_multiple as *mut nfdpathset_t;
-
-    unsafe {
-        result = match dialog_type {
-            DialogType::SingleFile => {
-                NFD_OpenDialog(filter_list_ptr, default_path_ptr, ptr_out_path)
-            }
-
-            DialogType::MultipleFiles => {
-                NFD_OpenDialogMultiple(filter_list_ptr, default_path_ptr, ptr_out_multiple)
-            }
-
-            DialogType::SaveFile => NFD_SaveDialog(filter_list_ptr, default_path_ptr, ptr_out_path),
-
-            DialogType::PickFolder => NFD_PickFolder(default_path_ptr, ptr_out_path),
-        };
-
-        match result {
-            nfdresult_t::Okay => {
-                if dialog_type == DialogType::MultipleFiles {
-                    let count = NFD_PathSet_GetCount(&out_multiple);
-                    let mut res = Vec::with_capacity(count);
-                    for i in 0..count {
-                        let path = CStr::from_ptr(NFD_PathSet_GetPath(&out_multiple, i))
-                            .to_string_lossy()
-                            .into_owned();
-                        res.push(PathBuf::from(path));
-                    }
-
-                    NFD_PathSet_Free(ptr_out_multiple);
-
-                    Ok(Response::OkayMultiple(res))
-                } else {
-                    let path =
-                        PathBuf::from(CStr::from_ptr(out_path).to_string_lossy().into_owned());
-
-                    NFD_Free(out_path as *mut _);
-
-                    Ok(Response::Okay(path))
-                }
-            }
-
-            nfdresult_t::Cancel => Ok(Response::Cancel),
-            nfdresult_t::Error => Err(NfdError::Error(
-                CStr::from_ptr(NFD_GetError())
-                    .to_string_lossy()
-                    .into_owned(),
-            )),
-        }
+        DialogType::SaveFile => imp::open_save_dialog(filter_list, default_path),
+        DialogType::PickFolder => imp::pick_folder(default_path),
     }
 }
