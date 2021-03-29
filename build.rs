@@ -20,89 +20,89 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-use std::{env, process::Command};
+// use std::{env, process::Command};
 
-macro_rules! nfd {
-    ($suf:expr) => {
-        concat!("nativefiledialog/src/", $suf);
-    };
-}
+// macro_rules! nfd {
+//     ($suf:expr) => {
+//         concat!("nativefiledialog/src/", $suf);
+//     };
+// }
 
 fn main() {
-    let mut cfg = cc::Build::new();
-    let target = env::var("TARGET").expect("TARGET not specified");
+    // let mut cfg = cc::Build::new();
+    // let target = env::var("TARGET").expect("TARGET not specified");
 
-    cfg.include(nfd!("include")).file(nfd!("nfd_common.c"));
+    // cfg.include(nfd!("include")).file(nfd!("nfd_common.c"));
 
-    // clang/gcc will give a truncation warning @ nfd_gtk.c:54:59
-    // ...but not apple clang! because apple clang is BEST CLANG
-    if cfg.get_compiler().is_like_gnu()
-        && !env::var("HOST")
-            .expect("HOST not specified")
-            .contains("darwin")
-    {
-        cfg.flag("-Wno-format-truncation");
-    }
+    // // clang/gcc will give a truncation warning @ nfd_gtk.c:54:59
+    // // ...but not apple clang! because apple clang is BEST CLANG
+    // if cfg.get_compiler().is_like_gnu()
+    //     && !env::var("HOST")
+    //         .expect("HOST not specified")
+    //         .contains("darwin")
+    // {
+    //     cfg.flag("-Wno-format-truncation");
+    // }
 
-    if target.contains("darwin") {
-        cfg.file(nfd!("nfd_cocoa.m")).compile("libnfd.a");
-        println!("cargo:rustc-link-lib=framework=AppKit");
-    } else if target.contains("windows") {
-        cfg.cpp(true)
-            .define("_CRT_SECURE_NO_WARNINGS", None)
-            .define("UNICODE", None)
-            .define("_UNICODE", None)
-            .file(nfd!("nfd_win.cpp"))
-            .compile("libnfd.a");
+    // if target.contains("darwin") {
+    //     cfg.file(nfd!("nfd_cocoa.m")).compile("libnfd.a");
+    //     println!("cargo:rustc-link-lib=framework=AppKit");
+    // } else if target.contains("windows") {
+    //     cfg.cpp(true)
+    //         .define("_CRT_SECURE_NO_WARNINGS", None)
+    //         .define("UNICODE", None)
+    //         .define("_UNICODE", None)
+    //         .file(nfd!("nfd_win.cpp"))
+    //         .compile("libnfd.a");
 
-        println!("cargo:rustc-link-lib=ole32");
-        println!("cargo:rustc-link-lib=shell32");
-        // MinGW doesn't link it by default
-        println!("cargo:rustc-link-lib=uuid");
-    } else {
-        let pkg_output = Command::new("pkg-config")
-            .arg("--cflags")
-            .arg("gtk+-3.0")
-            .arg("glib-2.0")
-            .arg("--libs")
-            .arg("glib-2.0")
-            .output();
+    //     println!("cargo:rustc-link-lib=ole32");
+    //     println!("cargo:rustc-link-lib=shell32");
+    //     // MinGW doesn't link it by default
+    //     println!("cargo:rustc-link-lib=uuid");
+    // } else {
+    //     let pkg_output = Command::new("pkg-config")
+    //         .arg("--cflags")
+    //         .arg("gtk+-3.0")
+    //         .arg("glib-2.0")
+    //         .arg("--libs")
+    //         .arg("glib-2.0")
+    //         .output();
 
-        if let Ok(output) = pkg_output {
-            let t = String::from_utf8(output.stdout).unwrap();
-            let flags = t.split(' ');
-            for flag in flags {
-                if flag != "\n" && !flag.is_empty() {
-                    cfg.flag(flag);
-                }
-            }
-        }
+    //     if let Ok(output) = pkg_output {
+    //         let t = String::from_utf8(output.stdout).unwrap();
+    //         let flags = t.split(' ');
+    //         for flag in flags {
+    //             if flag != "\n" && !flag.is_empty() {
+    //                 cfg.flag(flag);
+    //             }
+    //         }
+    //     }
 
-        cfg.file(nfd!("nfd_gtk.c")).compile("libnfd.a");
+    //     cfg.file(nfd!("nfd_gtk.c")).compile("libnfd.a");
 
-        // The libs needed are the not in the default search-path on FreeBSD
-        #[cfg(target_os = "freebsd")]
-        {
-            let pkg_search = Command::new("pkg-config")
-                .arg("--libs-only-L")
-                .arg("gtk+-3.0")
-                .arg("glib-2.0")
-                .output();
+    //     // The libs needed are the not in the default search-path on FreeBSD
+    //     #[cfg(target_os = "freebsd")]
+    //     {
+    //         let pkg_search = Command::new("pkg-config")
+    //             .arg("--libs-only-L")
+    //             .arg("gtk+-3.0")
+    //             .arg("glib-2.0")
+    //             .output();
 
-            if let Ok(output) = pkg_search {
-                let t = String::from_utf8(output.stdout).unwrap();
-                let flags = t.split(' ');
-                for flag in flags {
-                    if let Some(dir) = flag.strip_prefix("-L") {
-                        println!("cargo:rustc-link-search={}", dir);
-                    }
-                }
-            }
-        }
+    //         if let Ok(output) = pkg_search {
+    //             let t = String::from_utf8(output.stdout).unwrap();
+    //             let flags = t.split(' ');
+    //             for flag in flags {
+    //                 if let Some(dir) = flag.strip_prefix("-L") {
+    //                     println!("cargo:rustc-link-search={}", dir);
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        println!("cargo:rustc-link-lib=gdk-3");
-        println!("cargo:rustc-link-lib=gtk-3");
-        println!("cargo:rustc-link-lib=glib-2.0");
-        println!("cargo:rustc-link-lib=gobject-2.0");
-    }
+    //     println!("cargo:rustc-link-lib=gdk-3");
+    //     println!("cargo:rustc-link-lib=gtk-3");
+    //     println!("cargo:rustc-link-lib=glib-2.0");
+    //     println!("cargo:rustc-link-lib=gobject-2.0");
+    // }
 }
