@@ -377,8 +377,6 @@ unsafe fn add_filters(
             for typ in *exts {
                 if typ.is_empty() {
                     return Err("empty type provided".into());
-                } else if typ.len() >= 256 {
-                    return Err("provided type was too large".into());
                 }
 
                 if !filter_name.is_empty() {

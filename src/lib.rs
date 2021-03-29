@@ -79,20 +79,23 @@ pub use common::FilterList;
 use error::NfdError;
 use std::path::{Path, PathBuf};
 
-#[cfg(not(all(
-    target_os = "windows",
-    target_os = "macos",
-    target_os = "ios",
-    feature = "zenity"
-)))]
-mod gtk;
-#[cfg(not(all(
-    target_os = "windows",
-    target_os = "macos",
-    target_os = "ios",
-    feature = "zenity"
-)))]
-use gtk as imp;
+#[cfg_attr(
+    not(any(
+        target_os = "windows",
+        target_os = "macos",
+        target_os = "ios",
+        feature = "zenity"
+    )),
+    path = "gtk.rs"
+)]
+#[cfg_attr(
+    all(
+        not(any(target_os = "windows", target_os = "macos", target_os = "ios")),
+        feature = "zenity"
+    ),
+    path = "zenity.rs"
+)]
+mod imp;
 
 /// Result of opening a file dialog. Note that the underlying C library only
 /// ever returns paths encoded as utf-8 strings, if a path cannot be converted

@@ -32,5 +32,11 @@ include = [
 
 build = "build.rs"
 
+[features]
+# Uses [zenity](https://en.wikipedia.org/wiki/Zenity) on platforms where GTK
+# would normally be used, which allows not linking against GTK,k with the caveat
+# that the user must have zenity installed
+zenity = []
+
 [build-dependencies]
 cc = "1.0"
