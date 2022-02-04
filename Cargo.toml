@@ -7,12 +7,12 @@ authors = [
     "Daniel Collin <daniel@collin.com>",
     "Denis Kolodin <deniskolodin@gmail.com>",
     "Embark <opensource@embark-studios.com>",
-    "Jake Shadle <jake.shadle@embark-studios.com>"
+    "Jake Shadle <jake.shadle@embark-studios.com>",
 ]
 documentation = "https://docs.rs/nfd2"
 repository = "https://github.com/EmbarkStudios/nfd2"
 homepage = "https://github.com/EmbarkStudios/nfd2"
-description = "Rust bindings to nativefiledialog"
+description = "Please use https://crates.io/crates/rfd instead"
 keywords = ["file", "dialog", "ui"]
 readme = "README.md"
 license = "MIT AND Zlib"
@@ -29,6 +29,9 @@ include = [
     "nativefiledialog/src/**",
     "!nativefiledialog/src/test/*",
 ]
+
+[badges.maintenance]
+status = "deprecated"
 
 build = "build.rs"
 

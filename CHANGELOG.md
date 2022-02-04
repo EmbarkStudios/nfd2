@@ -1,3 +1,5 @@
+<!-- markdownlint-disable blanks-around-headings blanks-around-lists no-duplicate-heading -->
+
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -6,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+### Changed
+- Marked the crate as deprecated in favor of <https://crates.io/crates/rfd>
+
 ## [0.3.0] - 2021-03-26
 ### Changed
 - Renamed `NFDError` to `NfdError`.
