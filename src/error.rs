@@ -4,7 +4,7 @@ use std::{error, ffi, fmt, str};
 pub enum NfdError {
     NulError(ffi::NulError),
     Utf8Error(str::Utf8Error),
-    Error(String),
+    Error(std::borrow::Cow<'static, str>),
 }
 
 impl fmt::Display for NfdError {
@@ -26,6 +26,12 @@ impl From<ffi::NulError> for NfdError {
 impl From<str::Utf8Error> for NfdError {
     fn from(err: str::Utf8Error) -> Self {
         Self::Utf8Error(err)
+    }
+}
+
+impl From<&'static str> for NfdError {
+    fn from(err: &'static str) -> Self {
+        Self::Error(std::borrow::Cow::Borrowed(err))
     }
 }
 

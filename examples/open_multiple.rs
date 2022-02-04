@@ -1,7 +1,7 @@
 use nfd2::Response;
 
 fn main() {
-    let result = nfd2::dialog_multiple().open().expect("oh no");
+    let result = nfd2::open_file_multiple_dialog(None, None).expect("oh no");
 
     match result {
         Response::OkayMultiple(files) => println!("File path = {:?}", files),
